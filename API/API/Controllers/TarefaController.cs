@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Models;
+using System.IO.Compression;
 
 namespace API.Controllers;
 
@@ -52,4 +53,76 @@ public class TarefaController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+    // PATCH: api/tarefa/alterar
+    [HttpPatch("alterar/{id}")]
+
+    public IActionResult AlterarTarefa([FromRoute] int id, [FromBody] Tarefa tarefa)
+    {
+        try
+        {
+            Tarefa? tarefa1 = _context.Tarefas.FirstOrDefault(x => x.TarefaId == id);
+            if(tarefa1 == null)
+            {
+                return NotFound();
+            }
+            tarefa1.Titulo = tarefa.Titulo;
+            tarefa1.Descricao = tarefa.Descricao;
+            tarefa1.Status = tarefa.Status;
+            tarefa1.CriadoEm = tarefa.CriadoEm;
+            tarefa1.Categoria = tarefa.Categoria;
+                if(tarefa1 == null)
+                {
+                    return NotFound();
+                }
+                _context.Tarefas.Update(tarefa1);
+                _context.SaveChanges();
+                return Ok(tarefa1);
+        } catch(System.Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("naoconcluidas")]
+
+    public IActionResult BuscarNaoConcluidas()
+    {
+        try
+        {
+            List<Tarefa>? tarefas = 
+            _context.Tarefas.ToList();
+            if(tarefas == null)
+            {
+                return NotFound();
+            }
+            return Ok(tarefas);
+        } catch(Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("concluidas")]
+    public IActionResult BuscarConcluidas()
+    {
+        try
+        {
+            List<Tarefa>? tarefas = 
+            _context.Tarefas.ToList();
+            if(tarefas == null)
+            {
+                return NotFound();
+            }
+            return Ok(tarefas);
+        } catch(Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest(e.Message);
+        }
+    }
+
+
 }

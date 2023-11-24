@@ -10,6 +10,25 @@ Content-Type: application/json
 {
   "Titulo": "Compras no Supermercado",
   "Descricao": "1. Fazer lista de compras: pão, leite, ovos, frutas, vegetais",
+  "Status": "nao concluido",
   "CategoriaId": 4
 }
+
+### Alterar Tarefa ###
+PATCH {{base_url}}/alterar/1
+Content-Type: application/json
+
+{
+  "Titulo": "Compras em shopping",
+  "Descricao": "Comprar roupas para o filho mais velho.",
+  "Status": "concluida",
+  "CategoriaId": 4
+}
+
+### Listar nao concluidas ###
+GET {{base_url}}/naoconcluidas
+
+### Listar concluidas ###
+
+GET {{base_url}}/concluidas
 
